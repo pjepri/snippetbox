@@ -4,23 +4,24 @@ import (
 	"html/template"
 	"path/filepath"
 	"time"
+
 	"snippetbox.pjepri.net/internal/models"
 )
 
 type templateData struct {
-	CurrentYear int	
-	Snippet  *models.Snippet
-	Snippets []*models.Snippet
+	CurrentYear int
+	Snippet     *models.Snippet
+	Snippets    []*models.Snippet
+	Form        any
 }
-
 
 func humanDate(t time.Time) string {
 	return t.Format("02 Jan 2006 at 15:34")
 }
 
 var functions = template.FuncMap{
-	"humanDate": humanDate, 
-}	
+	"humanDate": humanDate,
+}
 
 func newTemplateCache() (map[string]*template.Template, error) {
 	cache := map[string]*template.Template{}
@@ -39,12 +40,12 @@ func newTemplateCache() (map[string]*template.Template, error) {
 			return nil, err
 		}
 
-		ts,err = ts.ParseGlob("./ui/html/partials/*.tmpl")
+		ts, err = ts.ParseGlob("./ui/html/partials/*.tmpl")
 		if err != nil {
 			return nil, err
 		}
 
-		ts, err= ts.ParseFiles(page)
+		ts, err = ts.ParseFiles(page)
 		if err != nil {
 			return nil, err
 		}
